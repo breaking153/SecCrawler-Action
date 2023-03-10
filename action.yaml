@@ -14,3 +14,4 @@ runs:
         shell: bash
       - id: run-SecCrawler
         run: ./SecCrawler/SecCrawler -c ./config.yml -test
+        shell: bash
