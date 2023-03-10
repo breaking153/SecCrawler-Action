@@ -1,37 +1,41 @@
-name: 🎉 Release Go Binary
-on: 
-  release:
-    types: [created]
-  workflow_dispatch:
-
+name: testRobot
 jobs:
-  releases-matrix:
-    name: Release Go Binary
+  testit:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
-        goos: [linux, windows, darwin]
-        goarch: ["386", amd64, arm64]
-        exclude:  
-          - goarch: "386"
-            goos: darwin
-          - goarch: arm64
-            goos: windows
     steps:
-    - name: Short tag Version
-      id: short_tag
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: useAction
+        uses: actions/
 
-    - uses: actions/checkout@v2
-    - uses: wangyoucao577/go-release-action@v1.22
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        goos: ${{ matrix.goos }}
-        goarch: ${{ matrix.goarch }}
-        goversion: 1.16
-        overwrite: true
-        # build_command: go build
-        build_flags: -trimpath -tags=jsoniter
-        ldflags: -s -w
-        asset_name: SecCrawler_${{ matrix.goos }}_${{ matrix.goarch }}_${{ steps.short_tag.outputs.VERSION }}
+      - name: Install
+        run: npm ci
+
+      # Creates file "$/files.json", among others
+      - name: Gather files changed
+        uses: trilom/file-changes-action@a6ca26c14274c33b15e6499323aac178af06ad4b
+        with:
+          fileOutput: 'json'
+
+      # For verification
+      - name: Show files changed
+        run: cat $HOME/files.json
+
+      - name: Link check (warnings, changed files)
+        run: |
+          ./script/rendered-content-link-checker.mjs \
+            --language en \
+            --max 100 \
+            --check-anchors \
+            --check-images \
+            --verbose \
+            --list $HOME/files.json
+
+      - name: Link check (critical, all files)
+        run: |
+          ./script/rendered-content-link-checker.mjs \
+            --language en \
+            --exit \
+            --verbose \
+            --check-images \
+            --level critical
