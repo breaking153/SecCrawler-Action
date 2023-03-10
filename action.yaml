@@ -1,1 +1,16 @@
+name: SecCrawler-Action
+description: "this is SecCrawler's Robot"
 
+runs: 
+    using: "composite"
+    steps:
+      - id: setup-go
+        uses: actions/setup-go@v3
+      - id: git-cloning
+        run: git clone https://github.com/Le0nsec/SecCrawler.git
+        shell: bash
+      - id: go-build
+        run: go build ./SecCrawler
+        shell: bash
+      - id: run-SecCrawler
+        run: ./SecCrawler/SecCrawler -c ./config.yml -test
