@@ -1,0 +1,76 @@
+ChromeDriver: ./chromedriver/linux64
+Proxy:
+  ProxyUrl: http://127.0.0.1:7890
+  CrawlerProxyEnabled: false
+  BotProxyEnabled: false
+Cron:
+  enabled: true
+  time: 18
+Api:
+  enabled: false
+  debug: false
+  host: 127.0.0.1
+  port: 8080
+  auth: auth_key_here
+Crawler:
+  EdgeForum:
+    enabled: true
+  XianZhi:
+    enabled: true
+    UseChromeDriver: false
+    CustomRSSURL: ""
+  SeebugPaper:
+    enabled: true
+  Anquanke:
+    enabled: true
+  Tttang:
+    enabled: true
+  QiAnXin:
+    enabled: true
+  Lab:
+    enabled: true
+    NoahLab:
+      enabled: true
+    Blog360:
+      enabled: true
+    Nsfocus:
+      enabled: true
+    Xlab:
+      enabled: true
+    AlphaLab:
+      enabled: true
+    Netlab:
+      enabled: true
+    RiskivyBlog:
+      enabled: true
+    TSRCBlog:
+      enabled: true
+    X1cT34m:
+      enabled: true
+Bot:
+  WecomBot:
+    enabled: true
+    key: 530d1aa3-7a51-4ae5-9adc-4f9cc5d98115
+    timeout: 3
+  FeishuBot:
+    enabled: false
+    key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    timeout: 2
+  DingBot:
+    enabled: false
+    token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    timeout: 2
+  HexQBot:
+    enabled: false
+    api: http://xxxxxx.com/send
+    qqgroup: 0
+    key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    timeout: 2
+  ServerChan:
+    enabled: false
+    sendkey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    timeout: 2
+  WgpSecBot:
+    enabled: false
+    key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    timeout: 2
