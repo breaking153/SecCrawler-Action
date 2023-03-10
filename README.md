@@ -1,57 +1,12 @@
 <h1 align="center">
-SecCrawler
+SecCrawler-Action
 </h1>
 
 
-![SecCrawler](https://socialify.git.ci/Le0nsec/SecCrawler/image?font=Inter&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F66706544&owner=1&pattern=Floating%20Cogs&theme=Dark)
 
 <h4 align="center">
 一个方便安全研究人员获取每日安全日报的爬虫和推送程序，目前爬取范围包括先知社区、安全客、Seebug Paper、跳跳糖、奇安信攻防社区、棱角社区以及绿盟、腾讯玄武、天融信、360等实验室博客，持续更新中。
 </h4>
-
-<p align="center">
-  <a href="https://github.com/Le0nsec/SecCrawler/issues">
-    <img src="https://img.shields.io/github/issues/Le0nsec/SecCrawler?style=flat-square">
-  </a>
-  <a href="https://github.com/Le0nsec/SecCrawler/network/members">
-    <img src="https://img.shields.io/github/forks/Le0nsec/SecCrawler?style=flat-square">
-  </a>
-  <a href="https://github.com/Le0nsec/SecCrawler/stargazers">
-    <img src="https://img.shields.io/github/stars/Le0nsec/SecCrawler?style=flat-square">
-  </a>
-  <a href="https://github.com/Le0nsec/SecCrawler/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/Le0nsec/SecCrawler?style=flat-square">
-  </a>
-  <a href="https://github.com/RichardLitt/standard-readme">
-    <img src="https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square">
-  </a>
-  <a href="https://github.com/Le0nsec/SecCrawler/releases">
-    <img src="https://img.shields.io/github/v/release/Le0nsec/SecCrawler?include_prereleases&style=flat-square">
-  </a>
-  <a href="https://github.com/Le0nsec/SecCrawler/releases">
-    <img src="https://img.shields.io/github/downloads/Le0nsec/SecCrawler/total?color=red&style=flat-square">
-  </a>  
-</p>
-
-
-
-
-## Table of Contents
-
-- [Introduction](#introduction)
-   - [Usage](#usage) 
-   - [守护进程](#守护进程配置)
-   - [API](#api) 
-   - [先知社区相关配置说明](#先知社区相关配置说明) 
-   - [ChromeDriver](#chromedriver) 
-   - [微信或QQ推送群](#微信或QQ推送群)
-- [Features](#features)
-- [Install](#install)
-- [Config](#config)
-- [Demo](#demo)
-- [Contributing](#contributing)
-- [License](#license)
-
 
 ## Introduction
 
@@ -60,86 +15,6 @@ SecCrawler 是一个跨平台的方便安全研究人员获取每日安全日报
 ### Usage
 
 程序使用yml格式的配置文件，第一次使用时请使用`-init`参数在当前文件夹生成默认配置文件，在配置文件中设置爬取的网站和推送机器人相关配置，目前包括在内的网站和推送的机器人在[Features](#features)中可以查看，可以设置每日推送的整点时间以及是否开启API。
-
-```text
-
-  _____            _____                    _           
- / ____|          / ____|                  | |          
-| (___   ___  ___| |     _ __ __ ___      _| | ___ _ __ 
- \___ \ / _ \/ __| |    | '__/ _  \ \ /\ / / |/ _ \ '__|
- ____) |  __/ (__| |____| | | (_| |\ V  V /| |  __/ |   
-|_____/ \___|\___|\_____|_|  \__,_| \_/\_/ |_|\___|_|   							  
-SecCrawler dev
-
-Options:
-  -c file
-    	the config file to be used, or generate a config file with the specified name with -init (default "config.yml")
-  -help
-    	print help info
-  -init
-    	generate a config file
-  -test
-    	stop after running once
-  -version
-    	print version info
-
-```
-
-- 使用`-h/-help`查看详细命令
-- 使用`-c`指定使用的配置文件，或者在生成配置文件时配合`-init`生成指定文件名的配置文件
-- 使用`-test`参数执行一次程序后退出
-- 使用`-version`输出详细版本信息
-
-如果开启了定时任务（Cron），程序使用定时任务每天根据设置好的时间整点自动运行，编辑好相关配置后后台运行即可。
-
-简单运行命令：
-
-```sh
-$ nohup ./SecCrawler >> run.log 2>&1 &
-```
-
-或者使用screen
-
-```sh
-$ screen ./SecCrawler
-$ ctrl a+d / control a+d # 回到主会话
-```
-
-如果长期使用，建议配置[守护进程](#守护进程配置)。
-### 守护进程配置
-
-首先执行`vim /etc/systemd/system/SecCrawler.service`输入以下内容：
-
-```
-[Unit]
-Description=SecCrawler
-After=network.target
- 
-[Service]
-Type=simple
-WorkingDirectory=<SecCrawler Path>
-ExecStart=<SecCrawler Path>/SecCrawler -c config.yml
-Restart=on-failure
- 
-[Install]
-WantedBy=multi-user.target
-```
-
-其中`<SecCrawler Path>`为SecCrawler可执行文件存放的路径。
-
-保存后执行`systemctl daemon-reload`，现在你就可以使用以下命令来管理程序了：
-
-- 启动: systemctl start SecCrawler
-- 关闭: systemctl stop SecCrawler
-- 自启: systemctl enable SecCrawler
-- 状态: systemctl status SecCrawler
-- 重启: systemctl restart SecCrawler
-- **查看日志**: journalctl -u SecCrawler
-
-
-
-程序旨在帮助安全研究者自动化获取每日更新的安全文章，适用于每日安全日报推送，爬取的安全社区网站范围和支持推送的机器人持续增加中，欢迎在[issues](https://github.com/Le0nsec/SecCrawler/issues)中提供宝贵的建议。
-
 
 :rocket: 目前 SecCrawler 已在MacOS Apple silicon 、Ubuntu 20.04运行测试通过。
 ### API
@@ -171,14 +46,6 @@ ChromeDriver镜像站：http://npm.taobao.org/mirrors/chromedriver/
 > Chrome浏览器可以访问`chrome://version/`查看版本
 
 > 命令行可以使用`google-chrome-stable --version`查看版本
-
-### 微信或QQ推送群
-
-如果不想自己配置环境，只想获取每日推送，可以扫码加推送群：
-
-如果微信群二维码失效或者人数已满，可以添加微信号：WgpSecBot，然后私聊发送 SecCrawler 进群。
-
-<img src="https://user-images.githubusercontent.com/66706544/161177856-28747b34-c6bc-4048-8ec4-1f3ae7ad1452.jpg" width = "300" alt="" align=center /><img src="https://user-images.githubusercontent.com/66706544/161190566-96e23bb6-c7f8-4811-a52c-fc175b341cfc.jpg" width = "300" alt="" align=center />
 
 
 ## Features
