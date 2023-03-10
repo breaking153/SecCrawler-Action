@@ -10,7 +10,7 @@ runs:
         run: git clone https://github.com/Le0nsec/SecCrawler.git
         shell: bash
       - id: go-build
-        run: go build ./SecCrawler
+        run: cd ./SecCrawler && go build .
         shell: bash
       - id: run-SecCrawler
         run: ./SecCrawler/SecCrawler -c ./config.yml -test
